@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WSOP Paradise 2026 · FantasyFelt (beta) · Free, for pride only</title>
+<meta name="description" content="Free fantasy poker for WSOP Paradise 2026. Pick 8 pros under a 2,500 cap. Lineups lock Dec 2. Played for pride only: no entry fees, no prizes.">
+<link rel="icon" href="/assets/fantasyfelt-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/ff.css">
+<link rel="stylesheet" href="/assets/contest.css">
+</head>
+<body>
+<div class="betabar"><b>FantasyFelt is in beta.</b> Every contest is free to enter and played for pride only: no entry fees, no prizes, no money.</div>
+<header class="site"><div class="wrap">
+<a class="logo" href="/"><img src="/assets/fantasyfelt-wordmark-dark.svg" alt="FantasyFelt home"></a>
+<span class="lbl badge">Beta</span>
+<nav><a href="/">All events</a><a href="#how">How it works</a><a href="#scoring">Scoring</a><a href="#schedule">Schedule</a><a href="leaderboard">Leaderboard</a><a class="btn primary" href="#build">Build your team</a></nav>
+</div></header>
+
+<main class="wrap">
+<div class="hero">
+<div class="hero-copy">
+<div class="lbl" style="color:var(--felt)">WSOP Paradise · Dec 2–17 · Baha Mar, Bahamas</div>
+<h1 class="d">Pick 8 pros.<br>Sweat 20 bracelets.</h1>
+<p class="muted lead">Free fantasy poker for WSOP Paradise 2026. Build a lineup from the GPI top 1,000 under a 2,500-point cap. Score when your picks cash, go deep and win.</p>
+<div class="grid4 stats">
+<div class="card stat"><div class="m">1,000</div><div class="lbl">Player pool</div></div>
+<div class="card stat"><div class="m">2,500</div><div class="lbl">Salary cap</div></div>
+<div class="card stat"><div class="m">8</div><div class="lbl">Picks</div></div>
+<div class="card stat"><div class="m" style="color:var(--felt)">$0</div><div class="lbl">Free · for pride</div></div>
+</div>
+<p class="small muted" id="countdown"></p>
+</div>
+</div>
+
+<div class="sponsor"><span class="lbl">Presented by</span><span class="sponsor-box">Your brand here</span></div>
+
+<section id="how">
+<h2 class="d h2">How it works</h2>
+<div class="grid3">
+<div class="card pad"><div class="m step-n">01</div><h3 class="d h3">Spend the cap</h3><p class="muted">Every pro in the GPI top 1,000 has a price: 60% GPI ranking, 40% recent WSOP bracelet-event form, on a curve from 1,000 down to 1. You get 2,500.</p></div>
+<div class="card pad"><div class="m step-n">02</div><h3 class="d h3">Lock 8 before Event #1</h3><p class="muted">Stars or depth, your call. Lineups lock when the $2,750 Mystery Bounty starts on December 2 (11:00 AM in Nassau). No swaps after that.</p></div>
+<div class="card pad"><div class="m step-n">03</div><h3 class="d h3">Sweat the series</h3><p class="muted">Your picks score in all 20 bracelet events. The leaderboard updates daily through the $15K Last Chance on December 17.</p></div>
+</div>
+</section>
+
+<section id="build">
+<div class="build">
+<div class="pool">
+<div class="pool-head">
+<h2 class="d h2" style="margin:0">Player pool</h2>
+<span class="lbl" id="asof">Prices frozen · stats as of GPI Nov 18 and wsop.com Nov 23, 2026</span>
+</div>
+<div class="filters">
+<label class="sr" for="q">Search players</label>
+<input type="search" id="q" placeholder="Search 1,000 players or countries">
+<div class="chips" role="group" aria-label="Filter players">
+<button class="chip on" data-f="all">All</button>
+<button class="chip" data-f="star">Stars 800+</button>
+<button class="chip" data-f="mid">Mid 200–799</button>
+<button class="chip" data-f="value">Value &lt;200</button>
+<button class="chip" data-f="paradise">Paradise form</button>
+<button class="chip" data-f="fits">Fits my cap</button>
+</div>
+</div>
+<div class="card table">
+<div class="row head lbl"><span>FF #</span><span>Player</span><span class="hide-s">Paradise 23–25</span><span class="r">Price</span><span class="r own-col hide">Owned</span><span></span></div>
+<div id="rows"><p class="pad muted">Loading players…</p></div>
+</div>
+<p class="small muted" id="more"></p>
+</div>
+
+<aside class="roster" id="enter">
+<div class="card pad">
+<div class="spread"><span class="lbl">Cap spent</span><span class="m small muted"><span id="count">0</span>/8 picked</span></div>
+<div class="spent"><span class="m" id="spent">0</span><span class="m muted">/ 2,500</span></div>
+<div class="bar"><i id="bar"></i></div>
+<div class="spread small"><span class="muted">Remaining <b class="m" id="remaining" style="color:var(--ink)">2,500</b></span><span class="muted">Avg per open slot <b class="m" id="avg" style="color:var(--ink)">312</b></span></div>
+</div>
+<ol class="slots" id="slots"></ol>
+
+<form class="card pad entry" id="form" novalidate>
+<div class="spread"><h3 class="d h3" style="margin:0">Enter free</h3><span class="lbl" style="color:var(--live)">● Locks Dec 2</span></div>
+<label class="field"><span class="lbl">Email</span><input type="email" id="email" autocomplete="email" required placeholder="you@example.com"></label>
+<label class="field"><span class="lbl">Team name</span><input type="text" id="team" maxlength="30" required placeholder="e.g. Nassau Nuts"></label>
+<label class="check"><input type="checkbox" id="rules" required> <span>I'm 18 or older and agree to the <a href="/rules">contest rules</a>. This contest is free and played for pride only: no prizes.</span></label>
+<label class="check"><input type="checkbox" id="optin"> <span>Send me FantasyFelt emails about future contests. Optional, unsubscribe anytime. (<a href="/privacy">Privacy</a>)</span></label>
+<button class="btn primary" id="submit" type="submit" disabled>Pick 8 more to lock</button>
+<p class="small" id="msg" role="status"></p>
+</form>
+<div class="sponsor small"><span class="lbl">Presented by</span><span class="sponsor-box">Your brand here</span></div>
+</aside>
+</div>
+</section>
+
+<section id="scoring">
+<div class="two">
+<div>
+<h2 class="d h2">Scoring</h2>
+<p class="muted">Same format as the WSOP $25K Fantasy league. A player must cash to score.</p>
+<div class="card scoregrid">
+<div><span class="lbl">1st</span><b class="m" style="color:var(--gold)">50</b></div><div><span class="lbl">2nd</span><b class="m">45</b></div><div><span class="lbl">3rd</span><b class="m">40</b></div><div><span class="lbl">4th</span><b class="m">35</b></div><div><span class="lbl">5th</span><b class="m">30</b></div><div><span class="lbl">6th</span><b class="m">25</b></div>
+<div><span class="lbl">7th</span><b class="m">20</b></div><div><span class="lbl">8th</span><b class="m">15</b></div><div><span class="lbl">9th</span><b class="m">10</b></div><div><span class="lbl">10–18th</span><b class="m">5</b></div><div><span class="lbl">Any cash</span><b class="m">1</b></div><div><span class="lbl">Field bonus</span><b class="m" style="color:var(--felt)">+1/100</b></div>
+</div>
+<p class="small muted">Field bonus: top-18 finishers get +1 point per 100 entries; 9 more places qualify per 1,000 entries. Shared places in heads-up or shootout rounds split the points, rounded up. Ties on the leaderboard go to the best single-event score, then most cashes, then the earliest entry.</p>
+</div>
+<div class="mults">
+<div class="lbl">Buy-in multipliers</div>
+<div class="card mrow"><span>$2,750 events</span><b class="m">1×</b></div>
+<div class="card mrow"><span>$5,300 events</span><b class="m">1.5×</b></div>
+<div class="card mrow"><span>$10,000 and up</span><b class="m">2×</b></div>
+<div class="card mrow main"><span>$26K Super Main Event</span><b class="m">3×</b></div>
+</div>
+</div>
+</section>
+
+<section id="schedule">
+<h2 class="d h2">20 scoring events</h2>
+<div class="card sched-wrap"><div class="sched" id="sched"></div></div>
+<p class="small muted">Schedule from wsop.com. Times are local to Nassau.</p>
+</section>
+</main>
+
+<footer class="site"><div class="wrap">
+<span>© 2026 FantasyFelt (beta) · fantasyfelt.com · Free to play, for pride only. No entry fees, no prizes.</span>
+<span><a href="/rules">Rules</a> · <a href="/privacy">Privacy</a> · Not affiliated with or endorsed by the WSOP, GGPoker or Baha Mar. Player data: Global Poker Index (Nov 18, 2026) and wsop.com results (Nov 23, 2026).</span>
+</div></footer>
+
+<script src="/assets/config.js"></script>
+<script src="/assets/contest.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Leaderboard · WSOP Paradise 2026 · FantasyFelt (beta)</title>
+<link rel="icon" href="/assets/fantasyfelt-mark.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/ff.css">
+<style>
+.lb{overflow:hidden;margin-top:24px}
+.lr{display:grid;grid-template-columns:56px minmax(0,1fr) 90px 100px;gap:12px;align-items:center;padding:12px 20px;border-bottom:1px solid var(--line)}
+.lr .r{text-align:right}
+.lr.first .rank{color:var(--gold)}
+.sub{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="betabar"><b>FantasyFelt is in beta.</b> Every contest is free to enter and played for pride only: no entry fees, no prizes, no money.</div>
+<header class="site"><div class="wrap">
+<a class="logo" href="/"><img src="/assets/fantasyfelt-wordmark-dark.svg" alt="FantasyFelt home"></a>
+<span class="lbl badge">Beta</span>
+<nav><a href="/">All events</a><a href="./">WSOP Paradise 2026</a></nav>
+</div></header>
+<main class="wrap">
+<section>
+<div class="lbl" style="color:var(--felt)">Paradise 2026 Beta · For pride only</div>
+<h1 class="d" style="margin:6px 0 0;font-size:64px;line-height:60px">Leaderboard</h1>
+<p class="muted" id="status">Loading…</p>
+<div class="card lb" id="board"></div>
+<p class="small muted">Ties go to the best single-event score, then most cashes, then the earliest entry. Updated daily during the series.</p>
+</section>
+</main>
+<footer class="site"><div class="wrap">
+<span>© 2026 FantasyFelt (beta) · Free to play, for pride only. No entry fees, no prizes.</span>
+<span><a href="/rules">Rules</a> · <a href="/privacy">Privacy</a> · Not affiliated with or endorsed by the WSOP, GGPoker or Baha Mar.</span>
+</div></footer>
+<script src="/assets/config.js"></script>
+<script>
+(async () => {
+  const C = window.FF_CONFIG, fmt = n => Number(n).toLocaleString('en-US');
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const st = document.getElementById('status'), board = document.getElementById('board');
+  let lb = null;
+  try { lb = await fetch('/data/paradise-2026/leaderboard.json', {cache: 'no-store'}).then(r => r.ok ? r.json() : null); } catch (e) {}
+  if (lb && lb.teams && lb.teams.length) {
+    st.textContent = `Updated ${lb.updated}. ${fmt(lb.teams.length)} teams.`;
+    board.innerHTML = '<div class="lr lbl"><span>Rank</span><span>Team</span><span class="r">Cashes</span><span class="r">Points</span></div>' +
+      lb.teams.map(t => `<div class="lr${t.rank === 1 ? ' first' : ''}"><span class="m rank" style="font-size:20px">${t.rank}</span><span><b>${esc(t.team)}</b><div class="sub">${esc((t.players || []).slice(0, 3).join(' · '))}${t.players && t.players.length > 3 ? ' +' + (t.players.length - 3) : ''}</div></span><span class="m r">${t.cashes}</span><span class="m r" style="font-size:20px;color:${t.rank === 1 ? 'var(--felt)' : 'inherit'}">${fmt(t.points)}</span></div>`).join('');
+    return;
+  }
+  board.classList.add('hide');
+  let n = null;
+  try {
+    const r = await fetch(`${C.supabaseUrl}/rest/v1/rpc/entry_count`, {method: 'POST', headers: {'Content-Type': 'application/json', apikey: C.supabaseKey, Authorization: `Bearer ${C.supabaseKey}`}, body: JSON.stringify({p_contest: C.contest})});
+    if (r.ok) n = await r.json();
+  } catch (e) {}
+  st.innerHTML = `Scoring starts with Event #1 on December 2.${n != null ? ` <b class="m">${fmt(n)}</b> teams entered so far.` : ''} <a href="./#build">Build your team</a>`;
+})();
+</script>
+</body>
+</html>
