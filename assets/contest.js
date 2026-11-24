@@ -118,11 +118,15 @@
     const email = $('#email').value.trim(), team = $('#team').value.trim();
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { msg.className = 'err'; msg.textContent = 'Enter a valid email.'; return; }
     if (team.length < 2) { msg.className = 'err'; msg.textContent = 'Give your team a name (2–30 characters).'; return; }
-    if (!$('#rules').checked) { msg.className = 'err'; msg.textContent = 'Please confirm you are 18+ and agree to the rules.'; return; }
+    if (!$('#rules').checked || !$('#optin').checked) { msg.className = 'err'; msg.textContent = 'Please tick both boxes to enter.'; return; }
     const b = $('#submit'); b.disabled = true; b.textContent = 'Locking…';
     try {
       await rpc('submit_entry', { p_contest: C.contest, p_email: email, p_team: team, p_picks: picked, p_opt_in: $('#optin').checked });
-      msg.className = 'ok'; msg.textContent = `You're in, ${team}! ${picked.length} player${picked.length > 1 ? 's' : ''}, ${fmt(spent())} of 2,500 spent. Good luck, and enjoy the sweat. Remember: this one is for pride only.`;
+      msg.className = 'ok';
+      const names = picked.map(id => byId.get(id)?.n).filter(Boolean).join(', ');
+      msg.innerHTML = `<b>You're in, ${esc(team)}!</b> ${esc(names)} · ${fmt(spent())} of 2,500.<br>${C.emailConfirmations ? 'We\'ve emailed your team to you.' : 'Screenshot this to keep your team; a confirmation email is coming soon.'} Your team name is on the <a href="leaderboard">leaderboard</a> now; lineups are revealed at lock. Free, for pride only.`;
+      try { localStorage.setItem(KEY + '-entered', JSON.stringify({ team, picked })); } catch (e) {}
+      document.querySelectorAll('#form input').forEach(i => i.disabled = true);
       b.textContent = 'Lineup locked in ✓';
     } catch (err) {
       msg.className = 'err'; msg.textContent = err.message; renderRoster();

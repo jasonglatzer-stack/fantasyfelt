@@ -50,13 +50,20 @@
       lb.teams.map(t => `<div class="lr${t.rank === 1 ? ' first' : ''}"><span class="m rank" style="font-size:20px">${t.rank}</span><span><b>${esc(t.team)}</b><div class="sub">${esc((t.players || []).slice(0, 3).join(' · '))}${t.players && t.players.length > 3 ? ' +' + (t.players.length - 3) : ''}</div></span><span class="m r">${t.cashes}</span><span class="m r" style="font-size:20px;color:${t.rank === 1 ? 'var(--felt)' : 'inherit'}">${fmt(t.points)}</span></div>`).join('');
     return;
   }
-  board.classList.add('hide');
-  let n = null;
+  let teams = null;
   try {
-    const r = await fetch(`${C.supabaseUrl}/rest/v1/rpc/entry_count`, {method: 'POST', headers: {'Content-Type': 'application/json', apikey: C.supabaseKey, Authorization: `Bearer ${C.supabaseKey}`}, body: JSON.stringify({p_contest: C.contest})});
-    if (r.ok) n = await r.json();
+    const r = await fetch(`${C.supabaseUrl}/rest/v1/rpc/team_list`, {method: 'POST', headers: {'Content-Type': 'application/json', apikey: C.supabaseKey, Authorization: `Bearer ${C.supabaseKey}`}, body: JSON.stringify({p_contest: C.contest})});
+    if (r.ok) teams = await r.json();
   } catch (e) {}
-  st.innerHTML = `Scoring starts with Event #1 on December 2.${n != null ? ` <b class="m">${fmt(n)}</b> teams entered so far.` : ''} <a href="./#build">Build your team</a>`;
+  if (!teams || !teams.length) {
+    board.classList.add('hide');
+    st.innerHTML = `Scoring starts with Event #1 on December 2. Be the first team on the board: <a href="./#build">build your team</a>.`;
+    return;
+  }
+  const lockedNow = Date.now() >= Date.parse(C.lockAt);
+  st.innerHTML = `<b class="m">${fmt(teams.length)}</b> teams entered. ${lockedNow ? 'Lineups are locked; scoring starts with Event #1.' : 'Lineups are revealed when the contest locks on Dec 2, 11:00 AM Nassau.'} <a href="./#build">Build your team</a>`;
+  board.innerHTML = '<div class="lr lbl"><span>#</span><span>Team</span><span class="r">Picks</span><span class="r">Points</span></div>' +
+    teams.map((t, i) => `<div class="lr"><span class="m muted">${i + 1}</span><span><b>${esc(t.team_name)}</b><div class="sub">${t.picks ? t.picks.length + ' players · ' + fmt(t.total) + ' of 2,500' : 'Team revealed at lock'}</div></span><span class="m r">${t.picks ? t.picks.length : '?'}</span><span class="m r">0</span></div>`).join('');
 })();
 </script>
 </body>
