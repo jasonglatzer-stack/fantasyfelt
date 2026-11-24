@@ -64,10 +64,10 @@ begin
   if p_email !~* '^[^@\s]+@[^@\s]+\.[^@\s]+$' then raise exception 'Enter a valid email'; end if;
   if char_length(v_team) < 2 or char_length(v_team) > 30 then raise exception 'Team name must be 2-30 characters'; end if;
   if v_team ~* '(https?://|www\.)' then raise exception 'Team name cannot contain a link'; end if;
-  if array_length(p_picks, 1) is distinct from c.roster_size then raise exception 'Pick exactly % players', c.roster_size; end if;
-  if (select count(distinct x) from unnest(p_picks) x) <> c.roster_size then raise exception 'Each player can only be picked once'; end if;
+  if coalesce(array_length(p_picks, 1), 0) < 1 or array_length(p_picks, 1) > c.roster_size then raise exception 'Pick between 1 and % players', c.roster_size; end if;
+  if (select count(distinct x) from unnest(p_picks) x) <> array_length(p_picks, 1) then raise exception 'Each player can only be picked once'; end if;
   select count(*), coalesce(sum(price), 0) into v_found, v_total from public.players where id = any(p_picks);
-  if v_found <> c.roster_size then raise exception 'Unknown player in lineup'; end if;
+  if v_found <> array_length(p_picks, 1) then raise exception 'Unknown player in lineup'; end if;
   if v_total > c.cap then raise exception 'Lineup is over the % cap', c.cap; end if;
   if exists (select 1 from public.entries where contest = p_contest and email = p_email::citext) then
     raise exception 'This email already has a team';

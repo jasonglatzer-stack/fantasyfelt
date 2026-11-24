@@ -90,8 +90,8 @@
     const b = $('#submit');
     if (locked()) { b.disabled = true; b.textContent = 'Lineups are locked'; }
     else if (over) { b.disabled = true; b.textContent = `Over the cap by ${fmt(-rem)}`; }
-    else if (n < C.rosterSize) { b.disabled = true; b.textContent = `Pick ${C.rosterSize - n} more to lock`; }
-    else { b.disabled = false; b.textContent = 'Lock my lineup'; }
+    else if (n < 1) { b.disabled = true; b.textContent = 'Pick at least 1 player'; }
+    else { b.disabled = false; b.textContent = n < C.rosterSize ? `Lock my ${n}-player lineup` : 'Lock my lineup'; }
   }
 
   const render = () => { renderRows(); renderRoster(); };
@@ -122,7 +122,7 @@
     const b = $('#submit'); b.disabled = true; b.textContent = 'Locking…';
     try {
       await rpc('submit_entry', { p_contest: C.contest, p_email: email, p_team: team, p_picks: picked, p_opt_in: $('#optin').checked });
-      msg.className = 'ok'; msg.textContent = `You're in, ${team}! ${fmt(spent())} of 2,500 spent. Good luck, and enjoy the sweat. Remember: this one is for pride only.`;
+      msg.className = 'ok'; msg.textContent = `You're in, ${team}! ${picked.length} player${picked.length > 1 ? 's' : ''}, ${fmt(spent())} of 2,500 spent. Good luck, and enjoy the sweat. Remember: this one is for pride only.`;
       b.textContent = 'Lineup locked in ✓';
     } catch (err) {
       msg.className = 'err'; msg.textContent = err.message; renderRoster();
@@ -148,6 +148,11 @@
 
   async function init() {
     countdown(); setInterval(countdown, 30000);
+    if (C.sponsor && C.sponsor.name) document.querySelectorAll('[data-sponsor]').forEach(el => {
+      el.classList.remove('hide'); const a = el.querySelector('[data-sponsor-link]');
+      a.href = C.sponsor.url || '#'; a.rel = 'sponsored noopener'; a.target = '_blank';
+      a.innerHTML = C.sponsor.logo ? `<img src="${esc(C.sponsor.logo)}" alt="${esc(C.sponsor.name)}" style="max-width:150px;max-height:32px">` : esc(C.sponsor.name);
+    });
     schedule().catch(() => {});
     const data = await fetch('/data/paradise-2026/players.json').then(r => r.json());
     P = data.players; byId = new Map(P.map(p => [p.id, p]));

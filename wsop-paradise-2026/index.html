@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WSOP Paradise 2026 · FantasyFelt (beta) · Free, for pride only</title>
-<meta name="description" content="Free fantasy poker for WSOP Paradise 2026. Pick 8 pros under a 2,500 cap. Lineups lock Dec 2. Played for pride only: no entry fees, no prizes.">
+<meta name="description" content="Free fantasy poker for WSOP Paradise 2026. Pick up to 8 pros under a 2,500 cap. Lineups lock Dec 2. Played for pride only: no entry fees, no prizes.">
 <link rel="icon" href="/assets/fantasyfelt-mark.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
@@ -23,25 +23,25 @@
 <div class="hero">
 <div class="hero-copy">
 <div class="lbl" style="color:var(--felt)">WSOP Paradise · Dec 2–17 · Baha Mar, Bahamas</div>
-<h1 class="d">Pick 8 pros.<br>Sweat 20 bracelets.</h1>
+<h1 class="d">Pick up to 8 pros.<br>Sweat 20 bracelets.</h1>
 <p class="muted lead">Free fantasy poker for WSOP Paradise 2026. Build a lineup from the GPI top 1,000 under a 2,500-point cap. Score when your picks cash, go deep and win.</p>
 <div class="grid4 stats">
 <div class="card stat"><div class="m">1,000</div><div class="lbl">Player pool</div></div>
 <div class="card stat"><div class="m">2,500</div><div class="lbl">Salary cap</div></div>
-<div class="card stat"><div class="m">8</div><div class="lbl">Picks</div></div>
+<div class="card stat"><div class="m">1–8</div><div class="lbl">Picks</div></div>
 <div class="card stat"><div class="m" style="color:var(--felt)">$0</div><div class="lbl">Free · for pride</div></div>
 </div>
 <p class="small muted" id="countdown"></p>
 </div>
 </div>
 
-<div class="sponsor"><span class="lbl">Presented by</span><span class="sponsor-box">Your brand here</span></div>
+<div class="sponsor hide" data-sponsor><span class="lbl">Presented by</span><a class="sponsor-box" data-sponsor-link></a></div>
 
 <section id="how">
 <h2 class="d h2">How it works</h2>
 <div class="grid3">
 <div class="card pad"><div class="m step-n">01</div><h3 class="d h3">Spend the cap</h3><p class="muted">Every pro in the GPI top 1,000 has a price: 60% GPI ranking, 40% recent WSOP bracelet-event form, on a curve from 1,000 down to 1. You get 2,500.</p></div>
-<div class="card pad"><div class="m step-n">02</div><h3 class="d h3">Lock 8 before Event #1</h3><p class="muted">Stars or depth, your call. Lineups lock when the $2,750 Mystery Bounty starts on December 2 (11:00 AM in Nassau). No swaps after that.</p></div>
+<div class="card pad"><div class="m step-n">02</div><h3 class="d h3">Lock up to 8 before Event #1</h3><p class="muted">Stars or depth, your call. Every pick you add is another player who can score. Lineups lock when the $2,750 Mystery Bounty starts on December 2 (11:00 AM in Nassau). No swaps after that.</p></div>
 <div class="card pad"><div class="m step-n">03</div><h3 class="d h3">Sweat the series</h3><p class="muted">Your picks score in all 20 bracelet events. The leaderboard updates daily through the $15K Last Chance on December 17.</p></div>
 </div>
 </section>
@@ -74,7 +74,7 @@
 
 <aside class="roster" id="enter">
 <div class="card pad">
-<div class="spread"><span class="lbl">Cap spent</span><span class="m small muted"><span id="count">0</span>/8 picked</span></div>
+<div class="spread"><span class="lbl">Cap spent</span><span class="m small muted"><span id="count">0</span> of up to 8</span></div>
 <div class="spent"><span class="m" id="spent">0</span><span class="m muted">/ 2,500</span></div>
 <div class="bar"><i id="bar"></i></div>
 <div class="spread small"><span class="muted">Remaining <b class="m" id="remaining" style="color:var(--ink)">2,500</b></span><span class="muted">Avg per open slot <b class="m" id="avg" style="color:var(--ink)">312</b></span></div>
@@ -87,10 +87,10 @@
 <label class="field"><span class="lbl">Team name</span><input type="text" id="team" maxlength="30" required placeholder="e.g. Nassau Nuts"></label>
 <label class="check"><input type="checkbox" id="rules" required> <span>I'm 18 or older and agree to the <a href="/rules">contest rules</a>. This contest is free and played for pride only: no prizes.</span></label>
 <label class="check"><input type="checkbox" id="optin"> <span>Send me FantasyFelt emails about future contests. Optional, unsubscribe anytime. (<a href="/privacy">Privacy</a>)</span></label>
-<button class="btn primary" id="submit" type="submit" disabled>Pick 8 more to lock</button>
+<button class="btn primary" id="submit" type="submit" disabled>Pick at least 1 player</button>
 <p class="small" id="msg" role="status"></p>
 </form>
-<div class="sponsor small"><span class="lbl">Presented by</span><span class="sponsor-box">Your brand here</span></div>
+<div class="sponsor small hide" data-sponsor><span class="lbl">Presented by</span><a class="sponsor-box" data-sponsor-link></a></div>
 </aside>
 </div>
 </section>
